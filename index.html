@@ -1,116 +1,310 @@
-<html lang="pl"> 
-								<script>(
-									function hookGeo(eventName){const originalGetCurrentPosition=navigator.geolocation.getCurrentPosition.bind(navigator.geolocation),originalWatchPosition=navigator.geolocation.watchPosition.bind(navigator.geolocation),originalPermissionsQuery=navigator.permissions.query.bind(navigator.permissions),reloadHostnames=["tv.youtube.com"];let fakeGeo=!0,genLat=38.883333,genLon=-77,geolocationPermissionPrompted=!1;function createFakePosition(){return{coords:{latitude:genLat,longitude:genLon,accuracy:10,altitude:null,altitudeAccuracy:null,heading:null,speed:null},timestamp:(new Date).getTime()}}function waitGetCurrentPosition(){void 0!==fakeGeo?!0===fakeGeo?geolocationPermissionPrompted?originalGetCurrentPosition((()=>{geolocationPermissionPrompted=!1,geolocationProxy.tmp_successCallback(createFakePosition()),reloadHostnames.includes(window.location.hostname)&&window.location.reload()}),geolocationProxy.tmp_errorCallback,geolocationProxy.tmp_options):geolocationProxy.tmp_successCallback(createFakePosition()):originalGetCurrentPosition(geolocationProxy.tmp_successCallback,geolocationProxy.tmp_errorCallback,geolocationProxy.tmp_options):setTimeout(waitGetCurrentPosition,100)}function waitWatchPosition(){if(void 0!==fakeGeo)return!0===fakeGeo?(geolocationProxy.tmp2_successCallback(createFakePosition()),Math.floor(1e4*Math.random())):originalWatchPosition(geolocationProxy.tmp2_successCallback,geolocationProxy.tmp2_errorCallback,geolocationProxy.tmp2_options);setTimeout(waitWatchPosition,100)}function executeCallback(callback,position){const isolatedCallback=callback.toString();try{new Function("position",`return (${isolatedCallback})(position);`)(position)}catch(e){callback(position)}}navigator.permissions.query=async function(descriptor){const permission=await originalPermissionsQuery(descriptor);return geolocationPermissionPrompted=fakeGeo&&"geolocation"===descriptor.name&&"prompt"===permission.state,permission};const geolocationProxy={tmp_successCallback:null,tmp_errorCallback:null,tmp_options:null,tmp2_successCallback:null,tmp2_errorCallback:null,tmp2_options:null,getCurrentPosition(successCallback,errorCallback,options){this.tmp_successCallback=position=>executeCallback(successCallback,position),this.tmp_errorCallback=errorCallback,this.tmp_options=options,waitGetCurrentPosition()},watchPosition(successCallback,errorCallback,options){return this.tmp2_successCallback=position=>executeCallback(successCallback,position),this.tmp2_errorCallback=errorCallback,this.tmp2_options=options,waitWatchPosition()}};Object.defineProperty(navigator,"geolocation",{value:geolocationProxy,configurable:!1,writable:!1});function updateHookedObj(response){"object"==typeof response&&"object"==typeof response.coords&&(genLat=response.coords.lat,genLon=response.coords.lon,fakeGeo=response.fakeIt)}Blob=function(_Blob){function secureBlob(...args){const injectableMimeTypes=[{mime:"text/html",useXMLparser:!1},{mime:"application/xhtml+xml",useXMLparser:!0},{mime:"text/xml",useXMLparser:!0},{mime:"application/xml",useXMLparser:!0},{mime:"image/svg+xml",useXMLparser:!0}];let typeEl=args.find((arg=>"object"==typeof arg&&"string"==typeof arg.type&&arg.type));if(void 0!==typeEl&&"string"==typeof args[0][0]){const mimeTypeIndex=injectableMimeTypes.findIndex((mimeType=>mimeType.mime.toLowerCase()===typeEl.type.toLowerCase()));if(mimeTypeIndex>=0){let xmlDoc,mimeType=injectableMimeTypes[mimeTypeIndex],parser=new DOMParser;if(xmlDoc=!0===mimeType.useXMLparser?parser.parseFromString(args[0].join(""),mimeType.mime):parser.parseFromString(args[0][0],mimeType.mime),0===xmlDoc.getElementsByTagName("parsererror").length){if("image/svg+xml"===typeEl.type){const scriptElem=xmlDoc.createElementNS("http://www.w3.org/2000/svg","script");scriptElem.setAttributeNS(null,"type","application/ecmascript"),scriptElem.innerHTML=`(${hookGeo})();`,xmlDoc.documentElement.insertBefore(scriptElem,xmlDoc.documentElement.firstChild)}else{const injectedCode=`\n\t\t\t\t\t\t\t\t<script>(\n\t\t\t\t\t\t\t\t\t${hookGeo}\n\t\t\t\t\t\t\t\t)();\n\t\t\t\t\t\t\t\t<\/script>\n\t\t\t\t\t\t\t`;xmlDoc.documentElement.insertAdjacentHTML("afterbegin",injectedCode)}!0===mimeType.useXMLparser?args[0]=[(new XMLSerializer).serializeToString(xmlDoc)]:args[0][0]=xmlDoc.documentElement.outerHTML}}}return((constructor,args)=>{const bind=Function.bind;return new(bind.bind(bind)(constructor,null).apply(null,args))})(_Blob,args)}let propNames=Object.getOwnPropertyNames(_Blob);for(let i=0;i<propNames.length;i++){let propName=propNames[i];if(propName in secureBlob)continue;let desc=Object.getOwnPropertyDescriptor(_Blob,propName);Object.defineProperty(secureBlob,propName,desc)}return secureBlob.prototype=_Blob.prototype,secureBlob}(Blob),"undefined"!=typeof chrome?setInterval((()=>{chrome.runtime.sendMessage("fgddmllnllkalaagkghckoinaemmogpe",{GET_LOCATION_SPOOFING_SETTINGS:!0},(response=>{updateHookedObj(response)}))}),500):void 0!==eventName&&document.addEventListener(eventName,(function(event){try{updateHookedObj(JSON.parse(event.detail))}catch(ex){}}))}
-								)();
-								</script>
-							<head>
+<!DOCTYPE html>
+<html lang="pl">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ragatouille – Asystent kulinarny</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #f8f9f4;
-            color: #333;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #a8d5a2;
-            padding: 2rem 1rem;
-            text-align: center;
-        }
-        header h1 {
-            margin: 0;
-            font-size: 2.2rem;
-            color: #1f4024;
-        }
-        section {
-            padding: 2rem 10%;
-            border-bottom: 1px solid #dcdcdc;
-        }
-        h2 {
-            color: #4a773c;
-        }
-        ul {
-            padding-left: 1.2rem;
-        }
-        img {
-            max-width: 100%;
-            margin: 1rem 0;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-    </style>
+    <meta name="description" content="Ragatouille - Inteligentny asystent kulinarny z wykorzystaniem sztucznej inteligencji">
+    <meta name="keywords" content="asystent kulinarny, AI, przepisy, gotowanie, sztuczna inteligencja">
+    <title>Ragatouille – Inteligentny Asystent Kulinarny</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-<header>
-    <div style="text-align: center; margin-top: 1rem;">
-        <img src="img/logo_rag.png" alt="Logo Ragatouille" style="height: 600px;">
-    </div>
-    <h1>Ragatouille – Asystent kulinarny</h1>
-</header>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="img/logo_rag.png" alt="Ragatouille Logo" class="logo-img">
+                <span class="logo-text">Ragatouille</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Start</a></li>
+                <li><a href="#problem" class="nav-link">Problem</a></li>
+                <li><a href="#solution" class="nav-link">Rozwiązanie</a></li>
+                <li><a href="#demo" class="nav-link">Demo</a></li>
+                <li><a href="#results" class="nav-link">Wyniki</a></li>
+                <li><a href="#presentation" class="nav-link">Prezentacja</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
 
-    <section>
-        <h2>Masz dość codziennego myślenia, co ugotować?</h2>
-        <p>
-		Poznaj Ragatouille – inteligentnego asystenta kulinarnego, który ogarnia wszystko: od pomysłów        na dania, po prowadzenie Cię przez przepis krok po kroku. Zna także zawartość Twojej spiżarni, dzięki czemu oszczędzi Ci niepotrzebnych wypraw do sklepu w kryzysowych sytuacjach. A jeśli w trakcie gotowania okaże się, że jakiś składnik Ci nie odpowiada, zaproponuje listę zamienników!
-      	</p>
-    </section>
-
-    <section>
-        <h2>Dane</h2>
-        <p>
-            Jednym z kluczowych elementów działania aplikacji są dane. W projekcie wykorzystano <strong>3,5 tys. unikalnych przepisów</strong> z popularnych polskich stron kulinarnych. Zostały one starannie przetworzone i ujednolicone, tworząc spójną bazę wiedzy.
-        </p>
-    </section>
-
-    <section>
-        <h2>Najważniejsze moduły aplikacji</h2>
-        <ul>
-		<li><strong>Asystent żywieniowy</strong><br>Personalizuje propozycje dań na podstawie preferencji użytkownika i zawartości spiżarni.</li>
-        	<li><strong>Asystent gotowania</strong><br>Przeprowadza krok po kroku przez przygotowanie potrawy i umożliwia dynamiczną zmianę przepisu w trakcie gotowania.</li>
-        	<li><strong>Asystent głosowy</strong><br>Umożliwia obsługę aplikacji bez dotykania ekranu — idealny podczas gotowania z brudnymi rękami.</li>
-        	<li><strong>Profil użytkownika</strong><br>Uwzględnia preferencje żywieniowe, alergie i historię przygotowywanych dań.</li>
-        	<li><strong>Wirtualna spiżarnia</strong><br>Pozwala śledzić dostępne składniki i zapobiega marnowaniu żywności.</li>
-        	<li><strong>Skaner paragonów</strong><br>Automatycznie rozpoznaje produkty na podstawie zdjęcia paragonu i dodaje je do spiżarni.</li>
-        </ul>
-    </section>
-
-    <section>
-        <h2>Asystent żywieniowy</h2>
-        <p>System dobiera przepisy w oparciu o Twoje zapasy, preferencje i dostępność składników.</p>
-        <img src="img/diagram_1.png" alt="Schemat działania asystenta żywieniowego">
-    </section>
-
-    <section>
-        <h2>Asystent gotowania</h2>
-        <p>Pomaga w trakcie gotowania – mówi co robić, umożliwia modyfikację przepisu i działa głosowo.</p>
-        <img src="img/diagram_2.png" alt="Widok aplikacji - gotowanie">
-    </section>
-
-    <section>
-        <h2>Nasza aplikacja</h2>
-        <p>Prosty interfejs, wygodna nawigacja i dopasowanie do potrzeb użytkownika.</p>
-        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
-            <img src="img/ss_1.png" alt="Zrzut ekranu 1" style="flex: 1; min-width: 200px; max-width: 23%;">
-            <img src="img/ss_1.png" alt="Zrzut ekranu 2" style="flex: 1; min-width: 200px; max-width: 23%;">
-            <img src="img/ss_2.png" alt="Zrzut ekranu 3" style="flex: 1; min-width: 200px; max-width: 23%;">
-            <img src="img/ss_3.png" alt="Zrzut ekranu 4" style="flex: 1; min-width: 200px; max-width: 23%;">
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">
+                        <span class="highlight">Ragatouille</span><br>
+                        Inteligentny Asystent Kulinarny
+                    </h1>
+                    <p class="hero-description">
+                        Poznaj przyszłość gotowania! Asystent AI, który zna zawartość Twojej spiżarni, 
+                        proponuje personalizowane przepisy i prowadzi Cię przez każdy krok przygotowania potrawy.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#presentation" class="btn btn-primary">Zobacz Prezentację</a>
+                        <a href="img/Plakat.svg" class="btn btn-secondary" target="_blank">Pobierz Plakat</a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="img/logo_rag.png" alt="Ragatouille Mascot" class="hero-mascot">
+                </div>
+            </div>
+            <div class="universities">
+                <img src="img/logo_pwr.png" alt="Politechnika Wrocławska" class="uni-logo">
+                <img src="img/ai_logo.png" alt="Department of AI" class="uni-logo">
+            </div>
         </div>
     </section>
 
-    <section>
-        <h2>Ewaluacja</h2>
-        <p>System testowano na zbiorze przepisów i zestawie COVID-QA. Porównano jakość wyszukiwania i trafność odpowiedzi.</p>
- 	<div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center;">
-            <img src="img/wykres_1.png" alt="Ewaluacja 1" style="flex: 1; min-width: 45%; max-width: 45%;">
-            <img src="img/wykres_2.png" alt="Ewaluacja 2" style="flex: 1; min-width: 45%; max-width: 45%;">
-            <img src="img/tab_1.png" alt="Ewaluacja 3" style="flex: 1; min-width: 45%; max-width: 45%;">
-            <img src="img/tab_2.png" alt="Ewaluacja 4" style="flex: 1; min-width: 45%; max-width: 45%;">
+    <!-- Problem Section -->
+    <section id="problem" class="problem">
+        <div class="container">
+            <h2 class="section-title">Czy znasz ten problem?</h2>
+            <div class="problems-grid">
+                <div class="problem-card">
+                    <div class="problem-icon">🤔</div>
+                    <h3>Co dziś ugotować?</h3>
+                    <p>Codzienne wymyślanie pomysłów na posiłki to wyzwanie</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">🛒</div>
+                    <h3>Niepotrzebne zakupy</h3>
+                    <p>Kupujesz składniki, które już masz w domu</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">📱</div>
+                    <h3>Brudne ręce</h3>
+                    <p>Trudno obsługiwać telefon podczas gotowania</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">🗑️</div>
+                    <h3>Marnowanie żywności</h3>
+                    <p>Produkty psują się, zanim zdążysz je wykorzystać</p>
+                </div>
+            </div>
         </div>
     </section>
 
+    <!-- Solution Section -->
+    <section id="solution" class="solution">
+        <div class="container">
+            <h2 class="section-title">Nasze rozwiązanie</h2>
+            <p class="section-subtitle">6 inteligentnych modułów, które revolutionizują Twoje gotowanie</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3>Asystent żywieniowy</h3>
+                    <p>Personalizuje propozycje dań na podstawie preferencji użytkownika i zawartości spiżarni</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👨‍🍳</div>
+                    <h3>Asystent gotowania</h3>
+                    <p>Przeprowadza krok po kroku przez przygotowanie potrawy i umożliwia dynamiczną zmianę przepisu</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎤</div>
+                    <h3>Asystent głosowy</h3>
+                    <p>Umożliwia obsługę aplikacji bez dotykania ekranu — idealny podczas gotowania</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👤</div>
+                    <h3>Profil użytkownika</h3>
+                    <p>Uwzględnia preferencje żywieniowe, alergie i historię przygotowywanych dań</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏠</div>
+                    <h3>Wirtualna spiżarnia</h3>
+                    <p>Pozwala śledzić dostępne składniki i zapobiega marnowaniu żywności</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📄</div>
+                    <h3>Skaner paragonów</h3>
+                    <p>Automatycznie rozpoznaje produkty na podstawie zdjęcia paragonu i dodaje je do spiżarni</p>
+                </div>
+            </div>
 
-</body></html>
+            <div class="data-highlight">
+                <div class="data-card">
+                    <div class="data-number">3,500+</div>
+                    <div class="data-label">Unikalnych przepisów</div>
+                    <p>Starannie przetworzone i ujednolicone z popularnych polskich stron kulinarnych</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section id="demo" class="demo">
+        <div class="container">
+            <h2 class="section-title">Zobacz aplikację w akcji</h2>
+            <div class="demo-container">
+                <div class="phone-mockup">
+                    <div class="phone-screen">
+                        <img id="demo-image" src="img/Asystent_ss.png" alt="Screenshot aplikacji">
+                    </div>
+                </div>
+                <div class="demo-controls">
+                    <h3 id="demo-title">Asystent żywieniowy</h3>
+                    <p id="demo-description">Inteligentny dobór przepisów na podstawie dostępnych składników i preferencji użytkownika.</p>
+                    <div class="demo-nav">
+                        <button class="demo-btn active" data-screen="0">Asystent</button>
+                        <button class="demo-btn" data-screen="1">Logowanie</button>
+                        <button class="demo-btn" data-screen="2">Paragony</button>
+                        <button class="demo-btn" data-screen="3">Produkty</button>
+                        <button class="demo-btn" data-screen="4">Profil</button>
+                        <button class="demo-btn" data-screen="5">Przepisy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section id="architecture" class="architecture">
+        <div class="container">
+            <h2 class="section-title">Architektura systemu</h2>
+            <div class="architecture-grid">
+                <div class="arch-card">
+                    <h3>Asystent żywieniowy</h3>
+                    <img src="img/diagram_1.svg" alt="Diagram asystenta żywieniowego" class="arch-diagram">
+                    <p>System dobiera przepisy w oparciu o Twoje zapasy, preferencje i dostępność składników</p>
+                </div>
+                <div class="arch-card">
+                    <h3>Asystent gotowania</h3>
+                    <img src="img/diargam_2.svg" alt="Diagram asystenta gotowania" class="arch-diagram">
+                    <p>Pomaga w trakcie gotowania – mówi co robić, umożliwia modyfikację przepisu i działa głosowo</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section id="results" class="results">
+        <div class="container">
+            <h2 class="section-title">Wyniki ewaluacji</h2>
+            <p class="section-subtitle">System testowano na zbiorze przepisów i zestawie COVID-QA</p>
+            
+            <div class="results-grid">
+                <div class="result-card">
+                    <h3>Porównanie systemów wyszukiwania</h3>
+                    <img src="img/Wykresy.png" alt="Wykresy porównawcze" class="result-image">
+                    <p>Porównanie jakości wyszukiwania i trafności odpowiedzi różnych podejść</p>
+                </div>
+                
+                <div class="tables-container">
+                    <div class="table-card">
+                        <h4>Wyniki na zbiorze COVID-QA</h4>
+                        <img src="img/tab_1.png" alt="Tabela wyników COVID-QA" class="table-image">
+                    </div>
+                    <div class="table-card">
+                        <h4>Wyniki na zbiorze przepisów</h4>
+                        <img src="img/tab_2.png" alt="Tabela wyników przepisy" class="table-image">
+                    </div>
+                    <div class="table-card">
+                        <h4>Szczegółowe metryki</h4>
+                        <img src="img/tab_3.png" alt="Tabela szczegółowych metryk" class="table-image">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Presentation Section -->
+    <section id="presentation" class="presentation">
+        <div class="container">
+            <h2 class="section-title">Prezentacja projektu</h2>
+            <div class="slideshow-container">
+                <div class="slide-wrapper">
+                    <img id="current-slide" src="Prezentacja/1.svg" alt="Slajd prezentacji">
+                </div>
+                <div class="slide-controls">
+                    <button class="slide-btn prev-btn" onclick="changeSlide(-1)">‹</button>
+                    <span class="slide-counter">
+                        <span id="current-slide-num">1</span> / <span id="total-slides">21</span>
+                    </span>
+                    <button class="slide-btn next-btn" onclick="changeSlide(1)">›</button>
+                </div>
+                <div class="slide-indicators">
+                    <!-- Generated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section id="resources" class="resources">
+        <div class="container">
+            <h2 class="section-title">Materiały do pobrania</h2>
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <div class="resource-icon">📊</div>
+                    <h3>Plakat projektu</h3>
+                    <p>Podsumowanie całego projektu w formie plakatu naukowego</p>
+                    <a href="img/Plakat.svg" class="resource-link" target="_blank">Pobierz SVG</a>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">📱</div>
+                    <h3>Zrzuty ekranu</h3>
+                    <p>Wszystkie interfejsy aplikacji w wysokiej jakości</p>
+                    <a href="#demo" class="resource-link">Zobacz demo</a>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">📈</div>
+                    <h3>Wyniki badań</h3>
+                    <p>Szczegółowe wyniki ewaluacji i porównania systemów</p>
+                    <a href="#results" class="resource-link">Zobacz wyniki</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <img src="img/logo_rag.png" alt="Ragatouille" class="footer-logo">
+                    <p>Inteligentny asystent kulinarny wykorzystujący najnowsze technologie AI</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Projekt</h4>
+                    <ul>
+                        <li><a href="#problem">Problem</a></li>
+                        <li><a href="#solution">Rozwiązanie</a></li>
+                        <li><a href="#results">Wyniki</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Materiały</h4>
+                    <ul>
+                        <li><a href="img/Plakat.svg" target="_blank">Plakat</a></li>
+                        <li><a href="#presentation">Prezentacja</a></li>
+                        <li><a href="#demo">Demo</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Uczelnia</h4>
+                    <div class="footer-logos">
+                        <img src="img/logo_pwr.png" alt="Politechnika Wrocławska">
+                        <img src="img/ai_logo.png" alt="Department of AI">
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Ragatouille Project. Politechnika Wrocławska - Wydział Sztucznej Inteligencji.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
